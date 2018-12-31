@@ -88,7 +88,7 @@ def cli(j, m, result_count, reduct_knob_building_effort, complexity_ratio, enabl
     # Prompt cross-val options
 
     folds = click.prompt("Num of folds: ", default=3)
-    test_size = click.prompt("Ratio of test size: ", default=0.33, type=click.FloatRange(0, 1))
+    test_size = click.prompt("Test size: ", default=0.33, type=click.FloatRange(0, 1))
     seeds = click.prompt("Num of seeds: ", default=2)
     target = click.prompt("Name of the target feature", type=TargetParamType())
 
