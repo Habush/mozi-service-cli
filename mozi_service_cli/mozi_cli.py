@@ -83,7 +83,7 @@ def cli(j, m, result_count, reduct_knob_building_effort, complexity_ratio, enabl
 
     moses_opts_str = "".join("{} {} ".format(key, val) for key, val in moses_opts_dict.items())
 
-    output_dict = {"moses_opts": moses_opts_str}
+    output_dict = {"mosesOpts": moses_opts_str}
 
     # Prompt cross-val options
 
