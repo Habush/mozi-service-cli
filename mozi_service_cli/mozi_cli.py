@@ -51,7 +51,7 @@ be selected out of the dataset.  A value of 0 disables feature selection.""")
 @click.option("--balance", default="1", type=click.Choice(["0", "1"]), help="""If the table has discrete output type (
 like bool or enum), balance the resulting ctable so all classes have the same weight.""")
 
-@click.option("--hc-Widen-Search", default="1", type=click.Choice(["0", "1"]), help="""Hillclimbing parameter (hc). If 
+@click.option("--hc-widen-Search", default="1", type=click.Choice(["0", "1"]), help="""Hillclimbing parameter (hc). If 
 false,then deme search terminates when a local hilltop is found. If true, then the search radius is progressively 
 widened, until another termination condition is met.""")
 @click.option("--hc-crossover-pop-size", default=1000, help="""Number of new candidates created by crossover during 
@@ -62,7 +62,7 @@ each iteration of hillclimbing.""")
                                         has more than the given number (and at 
                                         least 2 iterations has passed) then 
                                         crossover kicks in.""")
-@click.argument("dataset", type=click.File("r"))
+@click.argument("dataset", type=click.Path(exists=True, readable=True))
 @click.argument("out", type=click.Path(exists=True, writable=True))
 def cli(j, m, result_count, reduct_knob_building_effort, complexity_ratio, enable_fs, fs_algo, fs_target_size,
         balance, hc_widen_search, hc_crossover_pop_size, hc_crossover_min_neighbors,
@@ -76,14 +76,14 @@ def cli(j, m, result_count, reduct_knob_building_effort, complexity_ratio, enabl
         "-j": j, "--result-count": result_count, "--reduct-knob-building-effort": reduct_knob_building_effort,
         "-m": m, "--complexity-ratio": complexity_ratio, "--enable-fs": enable_fs,
         "--fs-algo": fs_algo, "--fs-target-size": fs_target_size, "--balance": balance,
-        "--hc-Widen-Search": hc_widen_search,
+        "--hc-widen-search": hc_widen_search,
         "--hc-crossover-pop-size": hc_crossover_pop_size,
         "--hc-crossover-min-neighbors": hc_crossover_min_neighbors
     }
 
     moses_opts_str = "".join("{} {} ".format(key, val) for key, val in moses_opts_dict.items())
 
-    output_dict = {"mosesOpts": moses_opts_str}
+    output_dict = {"mosesOpts": moses_opts_str + " -W 1"}
 
     # Prompt cross-val options
 
@@ -97,9 +97,7 @@ def cli(j, m, result_count, reduct_knob_building_effort, complexity_ratio, enabl
     output_dict["crossValOpts"] = cross_val_opts
     output_dict["target_feature"] = target
 
-    content = dataset.read()
-    encoded = base64.b64encode(content)
-    output_dict["dataset"] = encoded
+    output_dict["file@b64encode@dataset"] = dataset
 
     file = os.path.join(out, "query.json")
     with open(file, "w") as fp:

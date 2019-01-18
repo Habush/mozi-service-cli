@@ -7,7 +7,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="mozi-cli",
-    version="1.0",
+    version="1.4.1",
     author="Abdulrahman Semrie",
     author_email="hsamireh@gmail.com",
     descirption="A cli tool that will prepare a json file which can be used to call the MOSES SNET Service",
